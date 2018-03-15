@@ -1,0 +1,75 @@
+---
+title: "Cruz_MA712_HW4"
+output: html_notebook
+---
+
+```{r}
+library(readr)
+ student <- read_csv("/Users/cruz/Desktop/students.csv", col_names = TRUE)
+```
+```{r}
+head(student)
+```
+```{r}
+library(dplyr)
+library(sjmisc)
+library(Zelig)
+library(radiant.data)
+library(DescTools)
+
+
+student2 <- student%>%
+mutate(highed= ifelse(higher =="yes",1,0))
+
+m0 <- glm(highed ~ age, family = binomial, data = student2)
+summary(m0)
+
+
+```
+```{r}
+
+m1 <- glm(highed ~ age + failures + studytime, family = binomial, data = student2)
+summary(m1)
+
+```
+```{r}
+
+m2 <- glm(highed ~ age*failures + studytime, family = binomial, data = student2)
+summary(m2)
+
+```
+
+
+```{r}
+library(texreg)
+screenreg(list(m0, m1, m2))
+
+
+```
+```{r}
+anova(m0, m1, m2, test = "Chisq")
+```
+```{r}
+library(visreg)
+visreg(m0, "age", scale = "response")
+```
+```{r}
+visreg(m1, "age", by = "failures", scale = "response")
+```
+
+```{r}
+visreg(m2, "age", by = "studytime", scale = "response")
+```
+
+
+The analysis conducted displays data on secondary school students. My focus in this analysis was to better understand some of the factors that go into students wanting to get a higher education in this particular school. Although the observations seem quite limited it does give some insight on the factors that go into wanting to receive a higher education. It is also important to note that there is some drop-off with students who do not want to receive a higher education or drop out of school. Thus, I ran this analysis to uncover what might be some of the factors/differences that went into wanting to receive a higher education in this particular secondary school.
+	The variable that I chose to be my dependent variable was “higher” this displayed whether or not students wanted to get a higher education. The independent variables I choose were some that I thought would have a significant impact on whether students in this particular school wanted a higher education some of these include “age” which associated age to higher education. “failures” this variable displayed past class failures, and “study time” which displayed hours per week spent studying. These cohesive factors were taken into consideration when evaluating what type of impact goes into students in this particular school want to receive higher education.
+	 The first step I took was uploading the data and the necessary packages to run this analysis. I then took the dependent binary variable “higher” and used the mutate and ifelse function and changed it so that 1 would pertain to “Yes” and 0 would pertain to “No”. I then proceeded to use the glm function for model 0 and the findings displayed that age was statistically significant factor of higher education however age displayed a slightly negative correlation with students wanting to get higher education (-0.68). In model 1 we see a slight shift as more variables are factored in. For example, both “faillures” and “studytime” are factored into the glm function and we see that both are statistically significant however failures show a negative correlation of (-0.693) with receiving a higher education but “studytime” displayed a positive correlation (1.258) and was statistically significant.
+In the last model M2, I took a slightly different approach and created an interaction term between age and failures and the results displayed that there was not a negative correlation in fact there was a slight better/positive correlation in this instance however it is important to note that in this school age*failures was not statistically significant. The models proved my hypothesis to be true that as age and failure increase students are less likely to want higher education and study time factor had a positive impact on wanting to receive a higher education in this particular secondary school.
+In conclusion after assessing all three models, I used the likelihood ratio test to determine which model best fit the data and found that model 2 best described my data.
+The analysis conducted displays data on secondary school students. My focus in this analysis was to better understand some of the factors that go into students wanting to get a higher education in this particular school. Although the observations seem quite limited it does give some insight on the factors that go into wanting to receive a higher education. It is also important to note that there is some drop-off with students who do not want to receive a higher education or drop out of school. Thus, I ran this analysis to uncover what might be some of the factors/differences that went into wanting to receive a higher education in this particular secondary school.
+	The variable that I chose to be my dependent variable was “higher” this displayed whether or not students wanted to get a higher education. The independent variables I choose were some that I thought would have a significant impact on whether students in this particular school wanted a higher education some of these include “age” which associated age to higher education. “failures” this variable displayed past class failures, and “study time” which displayed hours per week spent studying. These cohesive factors were taken into consideration when evaluating what type of impact goes into students in this particular school want to receive higher education.
+	 The first step I took was uploading the data and the necessary packages to run this analysis. I then took the dependent binary variable “higher” and used the mutate and ifelse function and changed it so that 1 would pertain to “Yes” and 0 would pertain to “No”. I then proceeded to use the glm function for model 0 and the findings displayed that age was statistically significant factor of higher education however age displayed a slightly negative correlation with students wanting to get higher education (-0.68). In model 1 we see a slight shift as more variables are factored in. For example, both “faillures” and “studytime” are factored into the glm function and we see that both are statistically significant however failures show a negative correlation of (-0.693) with receiving a higher education but “studytime” displayed a positive correlation (1.258) and was statistically significant.
+In the last model M2, I took a slightly different approach and created an interaction term between age and failures and the results displayed that there was not a negative correlation in fact there was a slight better/positive correlation in this instance however it is important to note that in this school age*failures was not statistically significant. The models proved my hypothesis to be true that as age and failure increase students are less likely to want higher education and study time factor had a positive impact on wanting to receive a higher education in this particular secondary school.
+In conclusion after assessing all three models, I used the likelihood ratio test to determine which model best fit the data and found that model 2 best described my data.
+
